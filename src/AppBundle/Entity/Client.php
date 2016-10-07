@@ -1,13 +1,13 @@
 <?php
 namespace AppBundle\Entity;
 
+use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Model\User as BaseUser;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\Entity
  */
-class User extends BaseUser
+class Client extends BaseClient
 {
     /**
      * @ORM\Id

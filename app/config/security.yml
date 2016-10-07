@@ -16,16 +16,16 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+#        oauth_authorize:
+#            pattern:    ^/oauth/v2/auth
+        doc:
+            pattern: ^/doc
+            anonymous: true
+        api:
             pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
-            logout:       true
-            anonymous:    true
-
-    access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+            fos_oauth: true
+            stateless: true
+            anonymous: false
