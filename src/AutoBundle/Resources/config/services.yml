@@ -1,0 +1,2 @@
+parameters:
+    nelmio_api_doc.extractor.api_doc_extractor.class: AutoBundle\Extractor\ApiDocExtractor

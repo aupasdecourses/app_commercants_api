@@ -1,8 +1,7 @@
 <?php
 namespace AutoBundle\Controller;
 
-use AutoBundle\Helper\FormErrors;
-
+use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\View as ViewTemplate;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\View\View;
@@ -57,7 +56,13 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      * @return array
      *
      * @ViewTemplate()
-     * @ApiDoc()
+     * @QueryParam(name="offset", requirements="\d+", nullable=true, description="Start pagination offset")
+     * @QueryParam(name="limit", requirements="\d+", nullable=true, description="Number of entities to display")
+     * @QueryParam(name="order", map=true, nullable=true, description="Sort order")
+     *
+     * @ApiDoc(
+     *     output={"collection"=true}
+     * )
      */
     public function cgetAction(Request $request)
     {
@@ -226,7 +231,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      * @return array
      *
      * @ViewTemplate()
-     * @ApiDoc()
+     * @ApiDoc(output={})
      */
     public function getAction($id, Request $request)
     {
@@ -249,7 +254,12 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      * @return array
      *
      * @ViewTemplate(statusCode=Response::HTTP_CREATED)
-     * @ApiDoc()
+     * @ApiDoc(
+     *     statusCodes = {
+     *        201 = "Creation successful",
+     *        400 = "Invalid form"
+     *    }
+     * )
      */
     public function postAction(Request $request)
     {
@@ -478,5 +488,11 @@ abstract class AbstractController extends Controller implements ClassResourceInt
     protected function getEnv()
     {
         return $this->get('kernel')->getEnvironment();
+    }
+
+
+    public function getNSEntity ()
+    {
+        return 'AppBundle\Entity\\'.$this->entityName;
     }
 }
