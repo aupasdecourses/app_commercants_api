@@ -5,7 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class ProductType extends AbstractType
 {
     /**
      * @inheritdoc
@@ -13,22 +13,21 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('shopName')
-            ->add('address')
-            ->add('zip')
-            ->add('city')
-            ->add('mobile')
+            ->add('sku')
+            ->add('ref')
+            ->add('name')
+            ->add('available')
+            ->add('selected')
+            ->add('price')
+            ->add('priceUnit')
+            ->add('shortDescription')
+            ->add('portionWeight')
+            ->add('portionNumber')
+            ->add('tax')
+            ->add('origin')
+            ->add('bio')
+            ->add('user')
         ;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getParent()
-    {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
     }
 
     /**
