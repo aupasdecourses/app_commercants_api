@@ -20,6 +20,7 @@ class UserType extends AbstractType
             ->add('zip')
             ->add('city')
             ->add('mobile')
+            ->add('roles')
         ;
     }
 

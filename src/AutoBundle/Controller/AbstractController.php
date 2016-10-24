@@ -25,6 +25,9 @@ abstract class AbstractController extends Controller implements ClassResourceInt
     /** @var string */
     protected $entityName = null;
 
+    /** @var array The ACL for each Action */
+    protected $acl = [];
+
     /** @var array Default orderBy used in indexAction */
     protected $defaultOrder = ['id' => 'desc'];
 
@@ -42,9 +45,13 @@ abstract class AbstractController extends Controller implements ClassResourceInt
 
     /**
      * Replace __construct that doesn't exist in Symfony
+     *
+     * @param string $type
      */
-    public function init()
+    public function init($type = 'default')
     {
+        $this->checkAcl($type);
+
         $this->dispatcher = new ContainerAwareEventDispatcher($this->container);
     }
 
@@ -66,7 +73,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function cgetAction(Request $request)
     {
-        $this->init();
+        $this->init('list');
 
         $search  = $this->getSearch($request);
         $filters = $this->getFilterBy($request);
@@ -174,7 +181,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
                 }
             );
         } else {
-            $filters = [];
+            $filters = $this->defaultFilters;
         }
 
         return $filters;
@@ -215,6 +222,8 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function getCountAction(Request $request)
     {
+        $this->init('count');
+
         /** @var \AutoBundle\Repository\AbstractRepository $repository */
         $repository = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:'.$this->entityName);
@@ -235,7 +244,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function getAction($id, Request $request)
     {
-        $this->init();
+        $this->init('get');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -263,7 +272,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function postAction(Request $request)
     {
-        $this->init();
+        $this->init('post');
 
         $entityName = 'AppBundle\Entity\\'.$this->entityName;
         $formName   = 'AppBundle\Form\\'.$this->entityName.'Type';
@@ -272,6 +281,14 @@ abstract class AbstractController extends Controller implements ClassResourceInt
         $form   = $this->createForm(
             $formName,
             $entity
+        );
+
+        $this->triggerEvent(
+            'onCreateBeforeSubmit',
+            [
+                'entity'  => $entity,
+                'request' => $request,
+            ]
         );
 
         $form->submit($request->request->all());
@@ -288,6 +305,13 @@ abstract class AbstractController extends Controller implements ClassResourceInt
 
             $em->persist($entity);
             $em->flush();
+
+            $this->triggerEvent(
+                'onCreateAfterSave',
+                [
+                    'entity' => $entity,
+                ]
+            );
 
             return $entity;
         } else {
@@ -308,6 +332,8 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function putAction($id, Request $request)
     {
+        $this->init('put');
+
         return $this->putPatch($id, $request);
     }
 
@@ -324,6 +350,8 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function patchAction($id, Request $request)
     {
+        $this->init('patch');
+
         return $this->putPatch($id, $request, true);
     }
 
@@ -338,8 +366,6 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     protected function putPatch($id, Request $request, $clearMissing = false)
     {
-        $this->init();
-
         $em = $this->getDoctrine()->getManager();
 
         if (!$entity = $em->getRepository('AppBundle:'.$this->entityName)->find($id)) {
@@ -375,6 +401,13 @@ abstract class AbstractController extends Controller implements ClassResourceInt
             $em->merge($entity);
             $em->flush();
 
+            $this->triggerEvent(
+                'onUpdateAfterSave',
+                [
+                    'entity' => $entity,
+                ]
+            );
+
             return $entity;
         } else {
             return $form;
@@ -394,7 +427,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function deleteAction($id, Request $request)
     {
-        $this->init();
+        $this->init('delete');
 
         $em = $this->getDoctrine()->getManager();
 
@@ -416,6 +449,8 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function getPdfAction($id, Request $request)
     {
+        $this->init('pdf');
+
         $html = $this->returnPrint($id, $request);
 
         return new Response(
@@ -440,6 +475,8 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      */
     public function getPrintAction($id, Request $request)
     {
+        $this->init('print');
+
         $html = $this->returnPrint($id, $request);
 
         return new Response($html);
@@ -464,6 +501,24 @@ abstract class AbstractController extends Controller implements ClassResourceInt
     protected function notFound()
     {
         return View::create(['message' => 'Entity not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @param string $name
+     */
+    protected function checkAcl($name = 'default')
+    {
+        if ($this->acl)
+        {
+            if (isset($this->acl[$name]))
+            {
+                $this->denyAccessUnlessGranted($this->acl[$name]);
+            }
+            elseif (isset($this->acl['default']))
+            {
+                $this->denyAccessUnlessGranted($this->acl['default']);
+            }
+        }
     }
 
     /**

@@ -4,19 +4,21 @@ namespace AppBundle\Controller;
 use AutoBundle\Controller\AbstractController;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends AbstractController
 {
     protected $entityName = 'User';
 
+    protected $acl = [
+        'default' => 'ROLE_ADMIN'
+    ];
+
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init($type = 'default')
     {
-        parent::init();
+        parent::init($type);
 
         /**
          * - Create password onCreate
