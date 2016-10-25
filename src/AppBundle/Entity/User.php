@@ -17,7 +17,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * Name of the product
+     * User last name
      *
      * @var string
      *
@@ -26,7 +26,7 @@ class User extends BaseUser
     private $firstName;
 
     /**
-     * Name of the product
+     * User first name
      *
      * @var string
      *
@@ -35,7 +35,7 @@ class User extends BaseUser
     private $lastName;
 
     /**
-     * Name of the product
+     * Name of the shop
      *
      * @var string
      *
@@ -44,7 +44,7 @@ class User extends BaseUser
     private $shopName;
 
     /**
-     * Name of the product
+     * Address of the shop
      *
      * @var string
      *
@@ -53,7 +53,7 @@ class User extends BaseUser
     private $address;
 
     /**
-     * Name of the product
+     * Address zip
      *
      * @var string
      *
@@ -62,7 +62,7 @@ class User extends BaseUser
     private $zip;
 
     /**
-     * Name of the product
+     * Address city
      *
      * @var string
      *
@@ -71,7 +71,16 @@ class User extends BaseUser
     private $city;
 
     /**
-     * Name of the product
+     * User phone
+     *
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=255)
+     */
+    private $phone;
+
+    /**
+     * User mobile phone
      *
      * @var string
      *
@@ -222,6 +231,30 @@ class User extends BaseUser
     public function getCity()
     {
         return $this->city;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     /**
