@@ -24,6 +24,9 @@ security:
         doc:
             pattern: ^/doc
             anonymous: true
+        resetting:
+            pattern: ^/resetting
+            anonymous: true
         api:
             pattern: ^/
             fos_oauth: true
