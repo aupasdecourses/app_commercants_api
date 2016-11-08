@@ -32,7 +32,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="ref", type="string", length=255)
+     * @ORM\Column(name="reference_interne_magasin", type="string", length=255)
      */
     private $ref;
 
@@ -51,7 +51,7 @@ class Product
      *
      * @var boolean
      *
-     * @ORM\Column(name="available", type="boolean")
+     * @ORM\Column(name="status", type="boolean")
      */
     private $available;
 
@@ -60,7 +60,7 @@ class Product
      *
      * @var boolean
      *
-     * @ORM\Column(name="selected", type="boolean")
+     * @ORM\Column(name="on_selection", type="boolean")
      */
     private $selected;
 
@@ -69,7 +69,7 @@ class Product
      *
      * @var float
      *
-     * @ORM\Column(name="price", type="float", length=255)
+     * @ORM\Column(name="prix_public", type="float", length=255)
      */
     private $price;
 
@@ -78,7 +78,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="price_unit", type="integer", length=11)
+     * @ORM\Column(name="unite_prix", type="integer", length=11)
      */
     private $priceUnit;
 
@@ -96,7 +96,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="portion_weight", type="float", length=255)
+     * @ORM\Column(name="poids_portion", type="float", length=255)
      */
     private $portionWeight;
 
@@ -105,7 +105,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="portion_number", type="integer", length=11)
+     * @ORM\Column(name="nbe_portion", type="integer", length=11)
      */
     private $portionNumber;
 
@@ -114,7 +114,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="tax", type="integer", length=11)
+     * @ORM\Column(name="tax_class_id", type="integer", length=11)
      */
     private $tax;
 
@@ -123,7 +123,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="origin", type="string", length=255)
+     * @ORM\Column(name="origine", type="string", length=255)
      */
     private $origin;
 
@@ -132,7 +132,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="bio", type="boolean")
+     * @ORM\Column(name="produit_bio", type="boolean")
      */
     private $bio;
 
