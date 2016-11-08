@@ -65,7 +65,7 @@ class ProductController extends AbstractController
                     'Nouveau produit',
                     $entity->getUser()->getShopName().' à ajouté le produit : '.$entity->getName(),
                     ['noreplay@aupasdecourses.com' => 'Au Pas De Couses'],
-                    ['somebody@aupasdecourses.com' => 'SomeBody']
+                    ['prix@aupasdecourses.com' => 'Prix - Au Pas De Courses']
                 );
 
                 if (!$result = $this->get('mailer')->send($message))
@@ -87,7 +87,7 @@ class ProductController extends AbstractController
                     'Produit mise à jour',
                     $entity->getUser()->getShopName().' à mise à jour le produit : '.$entity->getName(),
                     ['noreplay@aupasdecourses.com' => 'Au Pas De Couses'],
-                    ['somebody@aupasdecourses.com' => 'SomeBody']
+                    ['prix@aupasdecourses.com' => 'Prix - Au Pas De Courses']
                 );
 
                 if (!$result = $this->get('mailer')->send($message))

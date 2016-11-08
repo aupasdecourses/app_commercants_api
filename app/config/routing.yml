@@ -18,6 +18,6 @@ fos_user_resetting_send_email:
     defaults: { _controller: AppBundle:Resetting:sendEmail }
 
 fos_user_resetting_reset:
-    path: /resetting/send-email
+    path: /resetting/reset/{token}
     methods: ['GET', 'POST']
     defaults: { _controller: AppBundle:Resetting:reset }
