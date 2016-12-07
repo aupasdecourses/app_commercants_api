@@ -27,6 +27,7 @@ class ProductType extends AbstractType
             ->add('origin')
             ->add('bio')
             ->add('user')
+            ->add('photoFile');
         ;
     }
 

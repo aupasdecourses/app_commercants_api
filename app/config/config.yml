@@ -83,6 +83,7 @@ fos_rest:
             - { path: '^/', priorities: ['json'], fallback_format: 'json', prefer_extension: false }
     body_listener:
         enabled: true
+    param_fetcher_listener: true
 
 # User Configuration
 fos_user:
@@ -120,5 +121,5 @@ nelmio_cors:
     '^/':
         allow_origin: ['*']
         allow_headers: ['*']
-        allow_methods: ['POST', 'PUT', 'GET', 'DELETE','OPTIONS']
+        allow_methods: ['POST', 'PUT', 'PATCH', 'GET', 'DELETE','OPTIONS']
         max_age: 3600

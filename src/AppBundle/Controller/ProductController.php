@@ -4,6 +4,10 @@ namespace AppBundle\Controller;
 use AutoBundle\Controller\AbstractController;
 use AutoBundle\Controller\EmailTrait;
 
+use FOS\RestBundle\Controller\Annotations\FileParam;
+use FOS\RestBundle\Controller\Annotations\View as ViewTemplate;
+use FOS\RestBundle\Request\ParamFetcher;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,16 +31,16 @@ class ProductController extends AbstractController
     {
         parent::init($type);
 
-        if ($this->isGranted('ROLE_ADMIN')) {
-            return;
-        }
-
         /**
          * - Force user for non-admin
          */
         $this->dispatcher->addListener(
             'Product.onCreateBeforeSubmit',
             function (GenericEvent $event) {
+                if ($this->isGranted('ROLE_ADMIN')) {
+                    return;
+                }
+
                 /** @var \Symfony\Component\HttpFoundation\Request $request */
                 if (!$request = $event->getArgument('request')) {
                     return;
@@ -86,8 +90,8 @@ class ProductController extends AbstractController
                 $message = $this->prepareEmail(
                     'Produit mise à jour',
                     $entity->getUser()->getShopName().' à mise à jour le produit : '.$entity->getName(),
-                    ['noreplay@aupasdecourses.com' => 'Au Pas De Couses'],
-                    ['prix@aupasdecourses.com' => 'Prix - Au Pas De Courses']
+                    ['noreplay@aupasdecourses.com', 'Au Pas De Couses'],
+                    ['prix@aupasdecourses.com', 'Prix - Au Pas De Courses']
                 );
 
                 if (!$result = $this->get('mailer')->send($message))
@@ -114,4 +118,23 @@ class ProductController extends AbstractController
         return $filters;
     }
     // TODO : Security, check user on GET and PUT for non-admin
+
+    /**
+     * Patch an existing entity
+     *
+     * @param integer $id      The entity id
+     * @param Request $request The Request
+     *
+     * @return object|\Symfony\Component\Form\Form|JsonResponse
+     *
+     * @FileParam(name="photoFile", nullable=true)
+     * @ViewTemplate()
+     * @ApiDoc()
+     */
+    public function postUploadAction($id, Request $request, ParamFetcher $paramFetcher)
+    {
+        $this->init('patch');
+
+        return $this->putPatch($id, $request, false);
+    }
 }

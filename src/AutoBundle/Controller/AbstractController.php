@@ -325,7 +325,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      * @param integer $id      The entity id
      * @param Request $request The Request
      *
-     * @@return object|\Symfony\Component\Form\Form|JsonResponse
+     * @return object|\Symfony\Component\Form\Form|JsonResponse
      *
      * @ViewTemplate()
      * @ApiDoc()
@@ -343,7 +343,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      * @param integer $id      The entity id
      * @param Request $request The Request
      *
-     * @@return object|\Symfony\Component\Form\Form|JsonResponse
+     * @return object|\Symfony\Component\Form\Form|JsonResponse
      *
      * @ViewTemplate()
      * @ApiDoc()
@@ -352,7 +352,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
     {
         $this->init('patch');
 
-        return $this->putPatch($id, $request, true);
+        return $this->putPatch($id, $request, false);
     }
 
     /**
@@ -364,7 +364,7 @@ abstract class AbstractController extends Controller implements ClassResourceInt
      *
      * @return object|\Symfony\Component\Form\Form|JsonResponse
      */
-    protected function putPatch($id, Request $request, $clearMissing = false)
+    protected function putPatch($id, Request $request, $clearMissing = true)
     {
         $em = $this->getDoctrine()->getManager();
 

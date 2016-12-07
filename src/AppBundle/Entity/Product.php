@@ -2,13 +2,39 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use \AutoBundle\Entity\UploadTrait;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
+    use UploadTrait;
+
+    /** Upload configuration */
+    private $config = [
+        'upload' => [
+            'rootDir'   => '/../../../web/',
+            'uploadDir' => 'uploads/products/',
+            /* 'photo' => [
+                'thumbnail' => [
+                    'width'  => 150,
+                    'height' => 100
+                ],
+                'resize' => [
+                    'width'  => 250,
+                    'height' => 250
+                ]
+            ] */
+        ]
+    ];
+
+    private $uploadFiles = ['photo'];
+
     /**
      * Autoincrement ID
      *
@@ -135,6 +161,28 @@ class Product
      * @ORM\Column(name="produit_bio", type="boolean")
      */
     private $bio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255)
+     */
+    private $photo;
+
+    /**
+     * @Assert\File(
+     *      maxSize = "10M",
+     *      mimeTypes = {"image/jpeg", "image/pjpeg", "image/png", "image/x-png", "image/gif"},
+     *      mimeTypesMessage = "Only images are accepted as photo.",
+     *      uploadIniSizeErrorMessage = "The photo image file is too big (10Mo max).",
+     *      uploadFormSizeErrorMessage = "The photo image file is too big (10Mo max).",
+     *      uploadErrorMessage = "The photo image file cannot be transfered.",
+     *      maxSizeMessage = "The photo image file is too big (10Mo max)."
+     * )
+     *
+     * @var UploadedFile $photoFile
+     */
+    public $photoFile;
 
     /**
      * The merchant user
@@ -466,6 +514,61 @@ class Product
     public function getBio()
     {
         return $this->bio;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     *
+     * @return Product
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * Sets photoFile.
+     *
+     * @param UploadedFile $file
+     */
+    public function setPhotoFile(UploadedFile $file = null)
+    {
+        $this->photoFile = $file;
+
+        if (isset($this->photo))
+        {
+            // store the old name to delete after the update
+            $this->tempPhoto = $this->photo;
+            $this->photo     = null;
+        }
+        else
+        {
+            $this->photo = 'initial';
+        }
+    }
+
+    /**
+     * Get logoFile.
+     *
+     * @return UploadedFile
+     */
+    public function getPhotoFile()
+    {
+        return $this->photoFile;
     }
 
     /**
