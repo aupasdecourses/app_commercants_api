@@ -50,6 +50,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="sku", type="string", length=255)
+     * @Assert\NotBlank(message="The SKU cannot be empty")
      */
     private $sku;
 
@@ -96,6 +97,7 @@ class Product
      * @var float
      *
      * @ORM\Column(name="prix_public", type="float", length=255)
+     * @Assert\NotBlank(message="The price cannot be empty")
      */
     private $price;
 
