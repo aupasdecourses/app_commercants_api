@@ -17,3 +17,6 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    from_email:         ['noreplay@aupasdecourses.com', 'Au Pas De Couses']
+    to_email:           ['prix@aupasdecourses.com', 'Prix - Au Pas De Courses']

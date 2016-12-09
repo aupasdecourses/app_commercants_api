@@ -9,6 +9,8 @@ use FOS\RestBundle\Controller\Annotations\View as ViewTemplate;
 use FOS\RestBundle\Request\ParamFetcher;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends AbstractController
@@ -26,6 +28,9 @@ class ProductController extends AbstractController
     ];
 
     protected $filterable = ['user'];
+
+    /** @var null|array The name of the changed fields */
+    private $changes = null;
 
     public function init($type = 'default')
     {
@@ -65,11 +70,31 @@ class ProductController extends AbstractController
                     return;
                 }
 
+                $title = 'Produit créé chez '.$entity->getUser()->getShopName();
+                $body  = 'Le produit suivant a été créé par '.$this->getUser().', le '.date("Y-m-d").' :'.PHP_EOL
+                    .'SKU : '.$entity->getSku().PHP_EOL
+                    .'Nom du produit : '.$entity->getName().PHP_EOL.PHP_EOL
+                    .'Référence : '.$entity->getRef().PHP_EOL
+                    .'Disponible : '.$entity->getAvailable().PHP_EOL
+                    .'Sélection APDC : '.$entity->getSelected().PHP_EOL
+                    .'Prix : '.$entity->getPrice().PHP_EOL
+                    .'Unit : '.$entity->getPriceUnit().PHP_EOL
+                    .'Description : '.$entity->getShortDescription().PHP_EOL
+                    .'Poids portion : '.$entity->getPortionWeight().PHP_EOL
+                    .'Nombre portion : '.$entity->getPortionNumber().PHP_EOL
+                    .'Tax : '.$entity->getTax().PHP_EOL
+                    .'Origin : '.$entity->getOrigin().PHP_EOL
+                    .'Bio : '.$entity->getBio().PHP_EOL
+                ;
+
+                $from = $this->getParameter('from_email');
+                $to   = $this->getParameter('to_email');
+
                 $message = $this->prepareEmail(
-                    'Nouveau produit',
-                    $entity->getUser()->getShopName().' à ajouté le produit : '.$entity->getName(),
-                    ['noreplay@aupasdecourses.com' => 'Au Pas De Couses'],
-                    ['prix@aupasdecourses.com' => 'Prix - Au Pas De Courses']
+                    $title,
+                    $body,
+                    $from,
+                    $to
                 );
 
                 if (!$result = $this->get('mailer')->send($message))
@@ -80,18 +105,61 @@ class ProductController extends AbstractController
             }
         );
         $this->dispatcher->addListener(
-            'Product.onUpdateAfterSave',
+            'Product.onUpdateBeforeSave',
             function (GenericEvent $event) {
                 /** @var \AppBundle\Entity\Product $entity */
                 if (!$entity = $event->getArgument('entity')) {
                     return;
                 }
 
+                /* Note: We could send the email here, but it's more secure to send it after the flush() */
+
+                $em  = $this->getDoctrine()->getManager();
+                $uow = $em->getUnitOfWork();
+                $uow->computeChangeSets();
+
+                $changes = $uow->getEntityChangeSet($entity);
+
+                $this->changes = array_flip(array_keys($changes));
+            }
+        );
+        $this->dispatcher->addListener(
+            'Product.onUpdateAfterSave',
+            function (GenericEvent $event) {
+                /** @var \AppBundle\Entity\Product $entity */
+                if (!$this->changes || !$entity = $event->getArgument('entity')) {
+                    return;
+                }
+
+                $bodyChanges = [
+                    'ref'              => 'Référence : '.$entity->getRef(),
+                    'available'        => 'Disponible : '.$entity->getAvailable(),
+                    'selected'         => 'Sélection APDC : '.$entity->getSelected(),
+                    'price'            => 'Prix : '.$entity->getPrice(),
+                    'priceUnit'        => 'Unit : '.$entity->getPriceUnit(),
+                    'shortDescription' => 'Description : '.$entity->getShortDescription(),
+                    'portionWeight'    => 'Poids portion : '.$entity->getPortionWeight(),
+                    'portionNumber'    => 'Nombre portion : '.$entity->getPortionNumber(),
+                    'tax'              => 'Tax : '.$entity->getTax(),
+                    'origin'           => 'Origin : '.$entity->getOrigin(),
+                    'bio'              => 'Bio : '.$entity->getBio(),
+                ];
+
+                $title = 'Produit mise à jour chez '.$entity->getUser()->getShopName();
+                $body  = 'Le produit suivant a été mis à jour par '.$this->getUser().', le '.date("Y-m-d").' :'.PHP_EOL
+                    .'SKU : '.$entity->getSku().PHP_EOL
+                    .'Nom du produit : '.$entity->getName().PHP_EOL.PHP_EOL
+                    .implode(PHP_EOL, array_intersect_key($bodyChanges, $this->changes))
+                ;
+
+                $from = $this->getParameter('from_email');
+                $to   = $this->getParameter('to_email');
+
                 $message = $this->prepareEmail(
-                    'Produit mise à jour',
-                    $entity->getUser()->getShopName().' à mise à jour le produit : '.$entity->getName(),
-                    ['noreplay@aupasdecourses.com', 'Au Pas De Couses'],
-                    ['prix@aupasdecourses.com', 'Prix - Au Pas De Courses']
+                    $title,
+                    $body,
+                    $from,
+                    $to
                 );
 
                 if (!$result = $this->get('mailer')->send($message))
@@ -125,7 +193,7 @@ class ProductController extends AbstractController
      * @param integer $id      The entity id
      * @param Request $request The Request
      *
-     * @return object|\Symfony\Component\Form\Form|JsonResponse
+     * @return object|Form|JsonResponse
      *
      * @FileParam(name="photoFile", nullable=true)
      * @ViewTemplate()
