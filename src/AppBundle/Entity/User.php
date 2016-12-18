@@ -3,9 +3,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity(fields="email", message="fos_user.email.already_used")
  */
 class User extends BaseUser
 {
@@ -40,6 +43,7 @@ class User extends BaseUser
      * @var string
      *
      * @ORM\Column(name="shop_name", type="string", length=255)
+     * @Assert\NotBlank(message="The shop name cannot be empty")
      */
     private $shopName;
 

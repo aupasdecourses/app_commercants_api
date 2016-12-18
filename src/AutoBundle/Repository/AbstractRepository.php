@@ -22,7 +22,8 @@ abstract class AbstractRepository extends EntityRepository
     protected $orderWithjoin = null;
 
     /**
-     * Get the real name of a field name based on its alias. If the field is not aliased $alias is returned
+     * Get the real name of a field name based on its alias.
+     * If the field is not aliased $alias is returned
      *
      * @param   string $alias The field to get an alias for
      *
@@ -49,7 +50,22 @@ abstract class AbstractRepository extends EntityRepository
      *
      * @return array
      */
-    public function searchAndfindBy($search = null, $filters = [], $orderBy = [], $limit = null, $offset = null, $only = null)
+    public function searchAndfindBy($search = null, $filters = array(), $orderBy = array(), $limit = null, $offset = null, $only = null)
+    {
+        return $this->searchAndfindQuery($search, $filters, $orderBy, $limit, $offset, $only)->getResult();
+    }
+
+    /**
+     * @param string $search
+     * @param array  $filters
+     * @param array  $orderBy
+     * @param int    $limit
+     * @param int    $offset
+     * @param mixed  $only
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function searchAndfindQuery($search = null, $filters = [], $orderBy = [], $limit = null, $offset = null, $only = null)
     {
         $qb = $this->createQueryBuilder('magic');
 
@@ -122,7 +138,7 @@ abstract class AbstractRepository extends EntityRepository
             }
         }
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery();
     }
 
     /**

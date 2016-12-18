@@ -80,7 +80,8 @@ trait UploadTrait
 
                 $realName = substr($name, 0, 4) == 'temp' ? strtolower(substr($name, 4)) : $name;
 
-                if (isset($this->config['upload'][$realName]['thumbnail'])
+                if (isset($this->config['upload'][$realName])
+                    && isset($this->config['upload'][$realName]['thumbnail'])
                     && ($thumb = $this->getUploadRootDir().'/thumbs/'.$this->$name)
                     && is_writable($thumb)
                 ) {
@@ -99,7 +100,7 @@ trait UploadTrait
      */
     public function doUpload($name)
     {
-        $config    = $this->config['upload'][$name];
+        $config    = isset($this->config['upload'][$name]) ? $this->config['upload'][$name] : [];
         $nameFile  = $name.'File';
         $uploadDir = $this->getUploadRootDir();
 

@@ -25,6 +25,7 @@ class ProductController extends AbstractController
         'get'     => 'ROLE_USER',
         'post'    => 'ROLE_USER',
         'put'     => 'ROLE_USER',
+        'patch'   => 'ROLE_USER',
     ];
 
     protected $filterable = ['user'];
@@ -202,6 +203,8 @@ class ProductController extends AbstractController
     public function postUploadAction($id, Request $request, ParamFetcher $paramFetcher)
     {
         $this->init('patch');
+
+        $request->request->add($paramFetcher->all());
 
         return $this->putPatch($id, $request, false);
     }

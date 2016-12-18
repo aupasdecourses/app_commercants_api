@@ -123,8 +123,8 @@ abstract class AbstractController extends Controller implements ClassResourceInt
         $current = $paginator ? $paginator->getSearchCount() : null;
 
         $return = [
-            'recordsTotal'    => $total,
-            'recordsFiltered' => $current,
+            'recordsTotal'    => (int) $total,
+            'recordsFiltered' => (int) $current,
             'data'            => $entities,
         ];
 

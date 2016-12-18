@@ -197,6 +197,16 @@ class Product
     private $user;
 
     /**
+     * Object to Array, used for export
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return (array) $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer
