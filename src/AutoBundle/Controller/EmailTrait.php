@@ -15,7 +15,7 @@ trait EmailTrait
      */
     public function prepareEmail($subject, $body, $from, $to, $cc = null, $bcc = null)
     {
-        $message = \Swift_Message::newInstance($subject, $body, 'text/html');
+        $message = \Swift_Message::newInstance($subject, $body); // Use 'text/html' to enable HTML email
 
         if (!is_array($from))
         {

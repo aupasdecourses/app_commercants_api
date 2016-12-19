@@ -16,16 +16,30 @@ class ProductType extends AbstractType
             ->add('sku')
             ->add('ref')
             ->add('name')
-            ->add('available')
-            ->add('selected')
+            ->add('available', null, [
+                'empty_data' => true
+            ])
+            ->add('selected', null, [
+                'empty_data' => false
+            ])
             ->add('price')
-            ->add('priceUnit')
+            ->add('priceUnit', null, [
+                'empty_data' => 1
+            ])
             ->add('shortDescription')
-            ->add('portionWeight')
-            ->add('portionNumber')
-            ->add('tax')
+            ->add('portionWeight', null, [
+                'empty_data' => 500
+            ])
+            ->add('portionNumber', null, [
+                'empty_data' => 1
+            ])
+            ->add('tax', null, [
+                'empty_data' => 1
+            ])
             ->add('origin')
-            ->add('bio')
+            ->add('bio', null, [
+                'empty_data' => false
+            ])
             ->add('user')
             ->add('photoFile');
         ;

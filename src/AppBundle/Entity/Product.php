@@ -49,8 +49,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="sku", type="string", length=255)
-     * @Assert\NotBlank(message="The SKU cannot be empty")
+     * @ORM\Column(name="sku", type="string", length=255, nullable=true)
      */
     private $sku;
 
@@ -59,7 +58,7 @@ class Product
      *
      * @var string
      *
-     * @ORM\Column(name="reference_interne_magasin", type="string", length=255)
+     * @ORM\Column(name="reference_interne_magasin", type="string", length=255, nullable=true)
      */
     private $ref;
 
@@ -80,7 +79,7 @@ class Product
      *
      * @ORM\Column(name="status", type="boolean")
      */
-    private $available;
+    private $available = true;
 
     /**
      * Slected on APDC
@@ -89,7 +88,7 @@ class Product
      *
      * @ORM\Column(name="on_selection", type="boolean")
      */
-    private $selected;
+    private $selected = false;
 
     /**
      * Price
@@ -108,14 +107,14 @@ class Product
      *
      * @ORM\Column(name="unite_prix", type="integer", length=11)
      */
-    private $priceUnit;
+    private $priceUnit = 1;
 
     /**
      * A short description of the product
      *
      * @var string
      *
-     * @ORM\Column(name="short_description", type="string", length=255)
+     * @ORM\Column(name="short_description", type="string", length=255, nullable=true)
      */
     private $shortDescription;
 
@@ -126,7 +125,7 @@ class Product
      *
      * @ORM\Column(name="poids_portion", type="float", length=255)
      */
-    private $portionWeight;
+    private $portionWeight = 500;
 
     /**
      * Number of portion
@@ -135,7 +134,7 @@ class Product
      *
      * @ORM\Column(name="nbe_portion", type="integer", length=11)
      */
-    private $portionNumber;
+    private $portionNumber = 1;
 
     /**
      * VAT
@@ -144,14 +143,14 @@ class Product
      *
      * @ORM\Column(name="tax_class_id", type="integer", length=11)
      */
-    private $tax;
+    private $tax = 1;
 
     /**
      * Origin of the product
      *
      * @var string
      *
-     * @ORM\Column(name="origine", type="string", length=255)
+     * @ORM\Column(name="origine", type="string", length=255, nullable=true)
      */
     private $origin;
 
@@ -162,12 +161,12 @@ class Product
      *
      * @ORM\Column(name="produit_bio", type="boolean")
      */
-    private $bio;
+    private $bio = false;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="photo", type="string", length=255)
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
     private $photo;
 
