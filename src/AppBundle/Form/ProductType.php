@@ -20,17 +20,17 @@ class ProductType extends AbstractType
             ->add('selected')
             ->add('price')
             ->add('priceUnit', null, [
-                'empty_data' => 1
+                'empty_data' => '1'
             ])
             ->add('shortDescription')
             ->add('portionWeight', null, [
-                'empty_data' => 500
+                'empty_data' => '500'
             ])
             ->add('portionNumber', null, [
-                'empty_data' => 1
+                'empty_data' => '1'
             ])
             ->add('tax', null, [
-                'empty_data' => 1
+                'empty_data' => '1'
             ])
             ->add('origin')
             ->add('bio')
