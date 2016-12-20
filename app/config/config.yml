@@ -90,6 +90,9 @@ fos_user:
     db_driver: orm
     firewall_name: api
     user_class: AppBundle\Entity\User
+    from_email:
+        address:        noreplay@aupasdecourses.com
+        sender_name:    Au Pas De Couses
 
 # OAuth Configuration
 fos_oauth_server:
