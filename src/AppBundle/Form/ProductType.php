@@ -16,12 +16,8 @@ class ProductType extends AbstractType
             ->add('sku')
             ->add('ref')
             ->add('name')
-            ->add('available', null, [
-                'empty_data' => true
-            ])
-            ->add('selected', null, [
-                'empty_data' => false
-            ])
+            ->add('available')
+            ->add('selected')
             ->add('price')
             ->add('priceUnit', null, [
                 'empty_data' => 1
@@ -37,9 +33,7 @@ class ProductType extends AbstractType
                 'empty_data' => 1
             ])
             ->add('origin')
-            ->add('bio', null, [
-                'empty_data' => false
-            ])
+            ->add('bio')
             ->add('user')
             ->add('photoFile');
         ;
