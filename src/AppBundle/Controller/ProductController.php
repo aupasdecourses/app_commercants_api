@@ -76,8 +76,8 @@ class ProductController extends AbstractController
                     .'SKU : '.$entity->getSku().PHP_EOL
                     .'Nom du produit : '.$entity->getName().PHP_EOL.PHP_EOL
                     .'Référence : '.$entity->getRef().PHP_EOL
-                    .'Disponible : '.$entity->getAvailable().PHP_EOL
-                    .'Sélection APDC : '.$entity->getSelected().PHP_EOL
+                    .'Disponible : '.($entity->getAvailable() ? 'Oui' : 'Non').PHP_EOL
+                    .'Sélection APDC : '.($entity->getSelected() ? 'Oui' : 'Non').PHP_EOL
                     .'Prix : '.$entity->getPrice().PHP_EOL
                     .'Unit : '.$entity->getPriceUnitValue().PHP_EOL
                     .'Description : '.$entity->getShortDescription().PHP_EOL
@@ -85,7 +85,7 @@ class ProductController extends AbstractController
                     .'Nombre portion : '.$entity->getPortionNumber().PHP_EOL
                     .'Tax : '.$entity->getTaxValue().PHP_EOL
                     .'Origin : '.$entity->getOrigin().PHP_EOL
-                    .'Bio : '.$entity->getBio().PHP_EOL
+                    .'Bio : '.($entity->getBio() ? 'Oui' : 'Non').PHP_EOL
                 ;
 
                 $from = $this->getParameter('from_email');
@@ -134,8 +134,8 @@ class ProductController extends AbstractController
 
                 $bodyChanges = [
                     'ref'              => 'Référence : '.$entity->getRef(),
-                    'available'        => 'Disponible : '.$entity->getAvailable(),
-                    'selected'         => 'Sélection APDC : '.$entity->getSelected(),
+                    'available'        => 'Disponible : '.($entity->getAvailable() ? 'Oui' : 'Non'),
+                    'selected'         => 'Sélection APDC : '.($entity->getSelected() ? 'Oui' : 'Non'),
                     'price'            => 'Prix : '.$entity->getPrice(),
                     'priceUnit'        => 'Unit : '.$entity->getPriceUnitValue(),
                     'shortDescription' => 'Description : '.$entity->getShortDescription(),
@@ -143,7 +143,7 @@ class ProductController extends AbstractController
                     'portionNumber'    => 'Nombre portion : '.$entity->getPortionNumber(),
                     'tax'              => 'Tax : '.$entity->getTaxValue(),
                     'origin'           => 'Origin : '.$entity->getOrigin(),
-                    'bio'              => 'Bio : '.$entity->getBio(),
+                    'bio'              => 'Bio : '.($entity->getBio() ? 'Oui' : 'Non'),
                 ];
 
                 $title = 'Produit mise à jour chez '.$entity->getUser()->getShopName();
