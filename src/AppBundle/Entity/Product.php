@@ -110,6 +110,14 @@ class Product
     private $priceUnit = 1;
 
     /**
+     * @var array
+     */
+    private $priceUnitValues = [
+        1 => 'Kg',
+        2 => 'Unit'
+    ];
+
+    /**
      * A short description of the product
      *
      * @var string
@@ -144,6 +152,15 @@ class Product
      * @ORM\Column(name="tax_class_id", type="integer", length=11)
      */
     private $tax = 1;
+
+    /**
+     * @var array
+     */
+    private $taxValues = [
+        1 => '5.5',
+        2 => '10',
+        3 => '20'
+    ];
 
     /**
      * Origin of the product
@@ -384,6 +401,20 @@ class Product
     }
 
     /**
+     * Get priceUnitValue
+     *
+     * @return float
+     */
+    public function getPriceUnitValue()
+    {
+        if ($this->priceUnit) {
+            return $this->priceUnitValues[$this->priceUnit];
+        }
+
+        return null;
+    }
+
+    /**
      * Set shortDescription
      *
      * @param string $shortDescription
@@ -477,6 +508,20 @@ class Product
     public function getTax()
     {
         return $this->tax;
+    }
+
+    /**
+     * Get taxValue
+     *
+     * @return float
+     */
+    public function getTaxValue()
+    {
+        if ($this->tax) {
+            return $this->taxValues[$this->tax];
+        }
+
+        return null;
     }
 
     /**

@@ -79,11 +79,11 @@ class ProductController extends AbstractController
                     .'Disponible : '.$entity->getAvailable().PHP_EOL
                     .'Sélection APDC : '.$entity->getSelected().PHP_EOL
                     .'Prix : '.$entity->getPrice().PHP_EOL
-                    .'Unit : '.$entity->getPriceUnit().PHP_EOL
+                    .'Unit : '.$entity->getPriceUnitValue().PHP_EOL
                     .'Description : '.$entity->getShortDescription().PHP_EOL
                     .'Poids portion : '.$entity->getPortionWeight().PHP_EOL
                     .'Nombre portion : '.$entity->getPortionNumber().PHP_EOL
-                    .'Tax : '.$entity->getTax().PHP_EOL
+                    .'Tax : '.$entity->getTaxValue().PHP_EOL
                     .'Origin : '.$entity->getOrigin().PHP_EOL
                     .'Bio : '.$entity->getBio().PHP_EOL
                 ;
@@ -137,11 +137,11 @@ class ProductController extends AbstractController
                     'available'        => 'Disponible : '.$entity->getAvailable(),
                     'selected'         => 'Sélection APDC : '.$entity->getSelected(),
                     'price'            => 'Prix : '.$entity->getPrice(),
-                    'priceUnit'        => 'Unit : '.$entity->getPriceUnit(),
+                    'priceUnit'        => 'Unit : '.$entity->getPriceUnitValue(),
                     'shortDescription' => 'Description : '.$entity->getShortDescription(),
                     'portionWeight'    => 'Poids portion : '.$entity->getPortionWeight(),
                     'portionNumber'    => 'Nombre portion : '.$entity->getPortionNumber(),
-                    'tax'              => 'Tax : '.$entity->getTax(),
+                    'tax'              => 'Tax : '.$entity->getTaxValue(),
                     'origin'           => 'Origin : '.$entity->getOrigin(),
                     'bio'              => 'Bio : '.$entity->getBio(),
                 ];
