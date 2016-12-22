@@ -144,6 +144,7 @@ class ProductController extends AbstractController
                     'tax'              => 'Tax : '.$entity->getTaxValue(),
                     'origin'           => 'Origin : '.$entity->getOrigin(),
                     'bio'              => 'Bio : '.($entity->getBio() ? 'Oui' : 'Non'),
+                    'photo'            => 'Photo : '.$entity->getPhoto(),
                 ];
 
                 $title = 'Produit mise à jour chez '.$entity->getUser()->getShopName();
