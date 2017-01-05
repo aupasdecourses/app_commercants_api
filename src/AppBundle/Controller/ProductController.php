@@ -28,6 +28,8 @@ class ProductController extends AbstractController
         'patch'   => 'ROLE_USER',
     ];
 
+    protected $orderable = ['available', 'name', 'origin', 'bio'];
+
     protected $filterable = ['user'];
 
     /** @var null|array The name of the changed fields */

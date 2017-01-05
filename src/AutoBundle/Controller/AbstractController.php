@@ -197,9 +197,16 @@ abstract class AbstractController extends Controller implements ClassResourceInt
     protected function getOrderBy(Request $request)
     {
         if (isset($this->orderable)) {
-            $orderBy = $request->get('orderBy');
+            $sortBy = $request->get('sortBy');
+            $sortDir = $request->get('sortDir');
 
-            if (!is_array($orderBy)) {
+            if (!in_array($sortDir, ['asc', 'desc'])) {
+                $sortDir = 'asc';
+            }
+
+            if (in_array($sortBy, $this->orderable)) {
+                $orderBy = [$sortBy => $sortDir];
+            } else {
                 $orderBy = $this->defaultOrder;
             }
         } else {
