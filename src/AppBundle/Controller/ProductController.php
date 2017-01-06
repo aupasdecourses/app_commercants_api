@@ -134,6 +134,9 @@ class ProductController extends AbstractController
                     return;
                 }
 
+                $photo = $this->get('request_stack')->getMasterRequest()
+                    ->getUriForPath('/uploads/products/'.$entity->getId().'/'.$entity->getPhoto());;
+
                 $bodyChanges = [
                     'ref'              => 'Référence : '.$entity->getRef(),
                     'available'        => 'Disponible : '.($entity->getAvailable() ? 'Oui' : 'Non'),
@@ -146,7 +149,7 @@ class ProductController extends AbstractController
                     'tax'              => 'Tax : '.$entity->getTaxValue(),
                     'origin'           => 'Origin : '.$entity->getOrigin(),
                     'bio'              => 'Bio : '.($entity->getBio() ? 'Oui' : 'Non'),
-                    'photo'            => 'Photo : '.$entity->getPhoto(),
+                    'photo'            => 'Photo : '.$photo,
                 ];
 
                 $title = 'Produit mise à jour chez '.$entity->getUser()->getShopName();
