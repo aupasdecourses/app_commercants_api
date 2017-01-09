@@ -116,10 +116,12 @@ class ResettingController extends BaseController
             $userManager->updateUser($user);
 
             if (null === $response = $event->getResponse()) {
-                $response = $this->render('::resettingOk.html.twig', array(
-                    'token' => $token,
-                    'form' => $form->createView(),
-                ));
+//                $response = $this->render('::resettingOk.html.twig', array(
+//                    'token' => $token,
+//                    'form' => $form->createView(),
+//                ));
+
+                return $this->redirect('http://commercants.aupasdecourses.com/');
             }
 
             $dispatcher->dispatch(FOSUserEvents::RESETTING_RESET_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
