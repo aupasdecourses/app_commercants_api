@@ -22,6 +22,9 @@ class UserType extends AbstractType
             ->add('phone')
             ->add('mobile')
             ->add('roles')
+            ->add('enabled', null, [
+                'empty_data' => '1'
+            ])
         ;
     }
 
